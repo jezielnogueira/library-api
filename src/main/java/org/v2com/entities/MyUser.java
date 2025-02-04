@@ -6,15 +6,15 @@ import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
 
 @Entity
-public class User extends PanacheEntity {
+public class MyUser extends PanacheEntity {
 
 
     @NotNull
-    @Size(min = 3, max = 100)
+    @Size(min = 3, max = 50)
     public String name;
 
     @NotNull
-    @Size(min = 3, max = 100)
+    @Size(min = 3, max = 50)
     public String email;
 
     @Size(min = 3, max = 100)
