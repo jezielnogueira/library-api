@@ -1,6 +1,7 @@
 package org.v2com.entities;
 
 import io.quarkus.hibernate.orm.panache.PanacheEntity;
+import io.quarkus.hibernate.orm.panache.PanacheEntityBase;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
@@ -8,10 +9,9 @@ import jakarta.validation.constraints.Size;
 import java.util.UUID;
 
 @Entity
-public class Book extends PanacheEntity {
+public class Book extends PanacheEntityBase {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO) // Usando AUTO para UUID
     @Column(name = "id", columnDefinition = "uuid")
     public UUID id;
 
@@ -36,5 +36,12 @@ public class Book extends PanacheEntity {
     public String publisher;
     public String tags;
     public String coverUrl;
+
+    @PrePersist
+    public void prePersist() {
+        if (id == null) {
+            id = UUID.randomUUID();
+        }
+    }
 
 }

@@ -2,14 +2,10 @@ package org.v2com.controller;
 
 
 import jakarta.validation.Valid;
-import jakarta.ws.rs.GET;
-import jakarta.ws.rs.POST;
-import jakarta.ws.rs.Path;
-import jakarta.ws.rs.Produces;
-import jakarta.ws.rs.core.Context;
-import jakarta.ws.rs.core.MediaType;
-import jakarta.ws.rs.core.UriBuilder;
-import jakarta.ws.rs.core.UriInfo;
+import jakarta.ws.rs.*;
+import jakarta.ws.rs.core.*;
+import java.util.UUID;
+
 import org.jboss.resteasy.reactive.RestPath;
 import org.jboss.resteasy.reactive.RestResponse;
 import org.v2com.entities.Book;
@@ -17,7 +13,7 @@ import org.v2com.services.BookService;
 
 import java.util.List;
 
-@Path("/api/v1/book")
+@Path("/api/v1/books")
 public class BookController {
 
     BookService service;
@@ -35,8 +31,8 @@ public class BookController {
     }
 
     @GET
-    @Path("/findbook/{id}")
-    public RestResponse<Book> getBook(@RestPath long id){
+    @Path("/{id}")
+    public RestResponse<Book> getBookById(@RestPath long id){
         Book book = service.findBookById(id);
         return book != null
                 ? RestResponse.ok(book)
@@ -50,7 +46,28 @@ public class BookController {
         return RestResponse.created(location);
     }
 
+    @PUT
+    public Response updateBook(@Valid Book book){
+        try {
+            Book updatedBook = service.updateBook(book.id, book);
+            return Response.ok(updatedBook).build();
+        } catch (IllegalArgumentException e) {
+            return Response.status(Response.Status.NOT_FOUND)
+                    .entity("Livro não encontrado para o ID fornecido.")
+                    .build();
+        } catch (Exception e) {
+            return Response.status(Response.Status.INTERNAL_SERVER_ERROR)
+                    .entity("Erro ao atualizar o livro.")
+                    .build();
+        }
+    }
 
+    @DELETE
+    @Path("/{id}")
+    public RestResponse<Void> deleteBook(@PathParam("id") String idStr) {
 
+        service.deleteBook(UUID.fromString(idStr));
+        return RestResponse.noContent();
+    }
 
 }
