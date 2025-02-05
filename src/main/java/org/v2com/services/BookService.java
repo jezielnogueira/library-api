@@ -15,27 +15,47 @@ import static jakarta.transaction.Transactional.TxType.SUPPORTS;
 @Transactional(REQUIRED)
 public class BookService {
 
+    //TODO Busca com Filtragem
+
     //  manipular a lógica de negócios
 
-    @Transactional(SUPPORTS)
     public List<Book> findAllBooks() {
         return Book.listAll();
     }
 
-    @Transactional(SUPPORTS)
-    public Book findBookById(long id) {
+    public Book findBookById(UUID id) {
         return Book.findById(id);
     }
 
+    public List<Book> findBooksByArgs(String title, String author, String tag) {
+        StringBuilder query = new StringBuilder("SELECT b FROM Book b WHERE 1=1");
+        if (title != null && !title.isEmpty()) {
+            query.append(" AND b.title LIKE :title");
+        }
+        if (author != null && !author.isEmpty()) {
+            query.append(" AND b.author LIKE :author");
+        }
+        if (tag != null && !tag.isEmpty()) {
+            query.append(" AND b.tags LIKE :tag");
+        }
+        return Book.list(query.toString(),
+                title != null ? "%" + title + "%" : "",
+                author != null ? "%" + author + "%" : "",
+                tag != null ? "%" + tag + "%" : "");
+    }
+
+    @Transactional(SUPPORTS)
     public Book persistBook(@Valid Book book) {
         book.persist();
         return book;
     }
 
+    @Transactional(SUPPORTS)
     public void deleteBook(UUID id) {
         Book.deleteById(id);
     }
 
+    @Transactional(SUPPORTS)
     public Book updateBook(UUID id, @Valid Book book) {
         Book existingBook = Book.findById(id);
 
@@ -49,8 +69,6 @@ public class BookService {
         existingBook.isbn = book.isbn;
         existingBook.genre = book.genre;
         existingBook.cover = book.cover;
-        existingBook.status = book.status;
-        existingBook.language = book.language;
         existingBook.publisher = book.publisher;
         existingBook.tags = book.tags;
         existingBook.coverUrl = book.coverUrl;

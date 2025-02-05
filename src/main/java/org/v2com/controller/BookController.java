@@ -6,7 +6,6 @@ import jakarta.ws.rs.*;
 import jakarta.ws.rs.core.*;
 import java.util.UUID;
 
-import org.jboss.resteasy.reactive.RestPath;
 import org.jboss.resteasy.reactive.RestResponse;
 import org.v2com.entities.Book;
 import org.v2com.services.BookService;
@@ -32,8 +31,8 @@ public class BookController {
 
     @GET
     @Path("/{id}")
-    public RestResponse<Book> getBookById(@RestPath long id){
-        Book book = service.findBookById(id);
+    public RestResponse<Book> getBookById(@PathParam("id") String idStr){
+        Book book = service.findBookById(UUID.fromString(idStr));
         return book != null
                 ? RestResponse.ok(book)
                 : RestResponse.status(RestResponse.Status.NOT_FOUND);
