@@ -7,12 +7,31 @@ import jakarta.persistence.Query;
 import org.v2com.entities.Book;
 
 import java.util.List;
+import java.util.UUID;
 
 @ApplicationScoped
 public class BookRepository {
 
     @Inject
-    EntityManager entityManager; // Injeção do EntityManager
+    EntityManager entityManager;
+
+    public Book findById(UUID id) {
+        return entityManager.find(Book.class, id);
+    }
+
+    public List<Book> findAllBooks() {
+        return entityManager.createQuery("SELECT b FROM Book b", Book.class).getResultList();
+    }
+
+    public void persist(Book book) {
+        entityManager.persist(book);
+    }
+    public void deleteById(UUID id) {
+        Book book = entityManager.find(Book.class, id);
+        if (book != null) {
+            entityManager.remove(book);
+        }
+    }
 
     public List<Book> findBooksByArgs(String title, String author, String tag) {
         // Construir a consulta dinamicamente com base nos parâmetros fornecidos

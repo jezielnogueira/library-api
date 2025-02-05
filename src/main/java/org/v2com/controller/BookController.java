@@ -48,6 +48,7 @@ public class BookController {
     }
 
     @POST
+    @Path("/")
     public RestResponse<Void> persistBook(@Valid Book book, @Context UriInfo uriInfo) {
         Book persistedBook = service.persistBook(book);
         var location = uriInfo.getAbsolutePathBuilder().path(persistedBook.id.toString()).build();
@@ -55,19 +56,10 @@ public class BookController {
     }
 
     @PUT
-    public Response updateBook(@Valid Book book){
-        try {
-            Book updatedBook = service.updateBook(book.id, book);
-            return Response.ok(updatedBook).build();
-        } catch (IllegalArgumentException e) {
-            return Response.status(Response.Status.NOT_FOUND)
-                    .entity("Livro não encontrado para o ID fornecido.")
-                    .build();
-        } catch (Exception e) {
-            return Response.status(Response.Status.INTERNAL_SERVER_ERROR)
-                    .entity("Erro ao atualizar o livro.")
-                    .build();
-        }
+    @Path("/")
+    public RestResponse<Book> updateBook(@Valid Book book){
+        book = service.updateBook(book.id, book);
+        return RestResponse.ok(book);
     }
 
     @DELETE

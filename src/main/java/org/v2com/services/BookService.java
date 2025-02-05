@@ -33,18 +33,16 @@ public class BookService {
         return repository.findBooksByArgs(title, author, tag);
     }
 
-    @Transactional(SUPPORTS)
+
     public Book persistBook(@Valid Book book) {
         book.persist();
         return book;
     }
 
-    @Transactional(SUPPORTS)
     public void deleteBook(UUID id) {
         Book.deleteById(id);
     }
 
-    @Transactional(SUPPORTS)
     public Book updateBook(UUID id, @Valid Book book) {
         Book existingBook = Book.findById(id);
 
@@ -61,9 +59,6 @@ public class BookService {
         existingBook.publisher = book.publisher;
         existingBook.tags = book.tags;
         existingBook.coverUrl = book.coverUrl;
-
-        existingBook.persist();
-
         return existingBook;
     }
 }
