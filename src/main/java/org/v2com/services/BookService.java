@@ -1,9 +1,11 @@
 package org.v2com.services;
 
 import jakarta.enterprise.context.ApplicationScoped;
+import jakarta.inject.Inject;
 import jakarta.transaction.Transactional;
 import jakarta.validation.Valid;
 import org.v2com.entities.Book;
+import org.v2com.repositories.BookRepository;
 
 import java.util.List;
 import java.util.UUID;
@@ -15,9 +17,9 @@ import static jakarta.transaction.Transactional.TxType.SUPPORTS;
 @Transactional(REQUIRED)
 public class BookService {
 
-    //TODO Busca com Filtragem
 
-    //  manipular a lógica de negócios
+    @Inject
+    BookRepository repository;
 
     public List<Book> findAllBooks() {
         return Book.listAll();
@@ -27,21 +29,8 @@ public class BookService {
         return Book.findById(id);
     }
 
-    public List<Book> findBooksByArgs(String title, String author, String tag) {
-        StringBuilder query = new StringBuilder("SELECT b FROM Book b WHERE 1=1");
-        if (title != null && !title.isEmpty()) {
-            query.append(" AND b.title LIKE :title");
-        }
-        if (author != null && !author.isEmpty()) {
-            query.append(" AND b.author LIKE :author");
-        }
-        if (tag != null && !tag.isEmpty()) {
-            query.append(" AND b.tags LIKE :tag");
-        }
-        return Book.list(query.toString(),
-                title != null ? "%" + title + "%" : "",
-                author != null ? "%" + author + "%" : "",
-                tag != null ? "%" + tag + "%" : "");
+    public List<Book> searchBooksByArgs(String title, String author, String tag) {
+        return repository.findBooksByArgs(title, author, tag);
     }
 
     @Transactional(SUPPORTS)
@@ -77,7 +66,4 @@ public class BookService {
 
         return existingBook;
     }
-
-
-
 }

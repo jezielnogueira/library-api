@@ -38,6 +38,15 @@ public class BookController {
                 : RestResponse.status(RestResponse.Status.NOT_FOUND);
     }
 
+    @GET
+    @Path("/search")
+    public RestResponse<List<Book>> getBooksByArgs(@QueryParam("title") String title, @QueryParam("author") String author, @QueryParam("tag") String tag){
+        List<Book> books = service.searchBooksByArgs(title, author, tag);
+        return books != null && !books.isEmpty()
+                ? RestResponse.ok(books)
+                : RestResponse.status(RestResponse.Status.NOT_FOUND);
+    }
+
     @POST
     public RestResponse<Void> persistBook(@Valid Book book, @Context UriInfo uriInfo) {
         Book persistedBook = service.persistBook(book);

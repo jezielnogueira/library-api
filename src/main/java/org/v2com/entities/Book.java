@@ -27,13 +27,18 @@ public class Book extends PanacheEntityBase {
     @Size(min = 3, max = 100)
     public String description;
 
-    @Column(name = "status", columnDefinition = "varchar(20)")
-    public BookStatus status;
 
-    public String isbn;
+
     public String genre;
 
+    public String isbn;
+
     public String cover;
+
+    @Column(name = "status", columnDefinition = "varchar(20)")
+    @Enumerated(EnumType.STRING)
+    public BookStatus status;
+
     public String publisher;
     public String tags;
     public String coverUrl;

@@ -1,6 +1,7 @@
 package org.v2com.entities;
 
 import io.quarkus.hibernate.orm.panache.PanacheEntity;
+import io.quarkus.hibernate.orm.panache.PanacheEntityBase;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.Id;
@@ -12,7 +13,7 @@ import org.v2com.enuns.UserStatus;
 import java.util.UUID;
 
 @Entity
-public class MyUser extends PanacheEntity {
+public class MyUser extends PanacheEntityBase {
 
     @Id
     @Column(name = "id", columnDefinition = "uuid")
@@ -31,9 +32,9 @@ public class MyUser extends PanacheEntity {
 
     @Size(min = 8, max = 20)
     public String phone;
-
-    @Column(name = "status", columnDefinition = "varchar(20)")
-    public UserStatus Status;
+//
+//    @Column(name = "status", columnDefinition = "varchar(20)")
+//    public UserStatus Status;
 
     public String password;
 
