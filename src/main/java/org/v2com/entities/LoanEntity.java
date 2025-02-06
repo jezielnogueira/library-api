@@ -1,10 +1,7 @@
 package org.v2com.entities;
 
 import io.quarkus.hibernate.orm.panache.PanacheEntityBase;
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.Id;
-import jakarta.persistence.PrePersist;
+import jakarta.persistence.*;
 
 import java.time.LocalDate;
 import java.util.UUID;
@@ -19,8 +16,12 @@ public class LoanEntity extends PanacheEntityBase {
     @Column(nullable = false)
     private UUID bookId;
 
-    @Column(nullable = false)
-    private UUID userId;
+//    @Column(nullable = false)
+//    private UUID userId;
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "user_id", nullable = false)
+    private UserEntity user;
 
     @Column(nullable = false)
     private LocalDate loanDate;
@@ -46,9 +47,13 @@ public class LoanEntity extends PanacheEntityBase {
 
     public void setReturned(boolean returned) { this.returned = returned; }
 
-    public UUID getUserId() { return this.userId; }
+    //public UUID getUserId() { return this.userId; }
 
-    public void setUserId(UUID userId) { this.userId = userId; }
+    //public void setUserId(UUID userId) { this.userId = userId; }
+
+    public UserEntity getUser() { return this.user; }
+
+    public void setUser(UserEntity user) { this.user = user; }
 
     public LocalDate getLoanDate() { return this.loanDate; }
 
