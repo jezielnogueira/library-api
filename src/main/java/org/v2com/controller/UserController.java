@@ -4,7 +4,7 @@ import io.smallrye.mutiny.Uni;
 import jakarta.ws.rs.GET;
 import jakarta.ws.rs.Path;
 import org.jboss.resteasy.reactive.RestResponse;
-import org.v2com.entities.MyUser;
+import org.v2com.entities.UserEntity;
 
 import static io.quarkus.hibernate.orm.panache.PanacheEntityBase.findById;
 
@@ -15,10 +15,10 @@ public class UserController {
 
     @GET
     @Path("/finduser")
-    public Uni<RestResponse<MyUser>> getUser(long id){
+    public Uni<RestResponse<UserEntity>> getUser(long id){
         return Uni.createFrom().item(() -> findById(id))
                 .map(user -> user != null
-                        ? RestResponse.ok((MyUser) user)
+                        ? RestResponse.ok((UserEntity) user)
                         : RestResponse.status(RestResponse.Status.NOT_FOUND));
     }
 

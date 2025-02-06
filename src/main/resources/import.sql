@@ -5,9 +5,9 @@
 -- insert into myentity (id, field) values(3, 'field-3');
 -- alter sequence myentity_seq restart with 4;
 
--- Inserir livros de teste na tabela "book"
+-- Inserir livros de teste na tabela "bookEntity"
 
-INSERT INTO book (id, title, author, description, isbn, genre, cover, status, publisher, tags, coverUrl)
+INSERT INTO bookEntity (id, title, author, description, isbn, genre, cover, status, publisher, tags, coverUrl)
 VALUES
     ('4a71c0bf-d2ef-4df6-8c6d-2216b55a6f65', 'The Great Gatsby', 'F. Scott Fitzgerald', 'A novel set in the Roaring Twenties that examines themes of wealth, class, and the American Dream.', '9780743273565', 'Fiction', 'hardcover', 'AVAILABLE', 'Scribner', 'classic, literature, american', 'https://example.com/cover1.jpg'),
     ('e3072317-0067-489a-ba1e-908c3e05697f', 'To Kill a Mockingbird', 'Harper Lee', 'A novel of racial injustice in the Deep South, focusing on the Finch family.', '9780061120084', 'Fiction', 'paperback', 'AVAILABLE', 'J.B. Lippincott & Co.', 'classic, literature, american', 'https://example.com/cover2.jpg'),

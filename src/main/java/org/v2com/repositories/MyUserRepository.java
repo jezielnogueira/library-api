@@ -2,12 +2,12 @@ package org.v2com.repositories;
 
 import io.quarkus.hibernate.orm.panache.PanacheRepository;
 import jakarta.persistence.EntityManager;
-import org.v2com.entities.MyUser;
+import org.v2com.entities.UserEntity;
 
-public class MyUserRepository implements PanacheRepository<MyUser> {
+public class MyUserRepository implements PanacheRepository<UserEntity> {
     EntityManager entityManager;
 
     public Integer countUsers(){
-        return entityManager.createQuery("SELECT COUNT(u) FROM MyUser WHERE Status = {}", Integer.class).getSingleResult();
+        return entityManager.createQuery("SELECT COUNT(u) FROM UserEntity WHERE Status = {}", Integer.class).getSingleResult();
     }
 }

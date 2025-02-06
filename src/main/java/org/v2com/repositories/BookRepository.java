@@ -4,7 +4,7 @@ import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.inject.Inject;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.Query;
-import org.v2com.entities.Book;
+import org.v2com.entities.BookEntity;
 
 import java.util.List;
 import java.util.UUID;
@@ -15,25 +15,25 @@ public class BookRepository {
     @Inject
     EntityManager entityManager;
 
-    public Book findById(UUID id) {
-        return entityManager.find(Book.class, id);
+    public BookEntity findById(UUID id) {
+        return entityManager.find(BookEntity.class, id);
     }
 
-    public List<Book> findAllBooks() {
-        return entityManager.createQuery("SELECT b FROM Book b", Book.class).getResultList();
+    public List<BookEntity> findAllBooks() {
+        return entityManager.createQuery("SELECT b FROM BookEntity b", BookEntity.class).getResultList();
     }
 
-    public void persist(Book book) {
-        entityManager.persist(book);
+    public void persist(BookEntity bookEntity) {
+        entityManager.persist(bookEntity);
     }
     public void deleteById(UUID id) {
-        Book book = entityManager.find(Book.class, id);
-        if (book != null) {
-            entityManager.remove(book);
+        BookEntity bookEntity = entityManager.find(BookEntity.class, id);
+        if (bookEntity != null) {
+            entityManager.remove(bookEntity);
         }
     }
 
-    public List<Book> findBooksByArgs(String title, String author, String tag) {
+    public List<BookEntity> findBooksByArgs(String title, String author, String tag) {
         // Construir a consulta dinamicamente com base nos parâmetros fornecidos
         StringBuilder queryBuilder = new StringBuilder("SELECT b FROM Book b WHERE 1=1");
 

@@ -1,6 +1,5 @@
 package org.v2com.entities;
 
-import io.quarkus.hibernate.orm.panache.PanacheEntity;
 import io.quarkus.hibernate.orm.panache.PanacheEntityBase;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -8,12 +7,11 @@ import jakarta.persistence.Id;
 import jakarta.persistence.PrePersist;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
-import org.v2com.enuns.UserStatus;
 
 import java.util.UUID;
 
 @Entity
-public class MyUser extends PanacheEntityBase {
+public class UserEntity extends PanacheEntityBase {
 
     @Id
     @Column(name = "id", columnDefinition = "uuid")

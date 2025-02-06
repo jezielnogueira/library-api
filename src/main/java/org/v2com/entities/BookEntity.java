@@ -9,7 +9,7 @@ import org.v2com.enuns.BookStatus;
 import java.util.UUID;
 
 @Entity
-public class Book extends PanacheEntityBase {
+public class BookEntity extends PanacheEntityBase {
 
     @Id
     @Column(name = "id", columnDefinition = "uuid")
