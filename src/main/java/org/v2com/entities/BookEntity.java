@@ -35,14 +35,6 @@ public class BookEntity extends PanacheEntityBase {
 
     public String cover;
 
-    public BookStatus getStatus() {
-        return status;
-    }
-
-    public void setStatus(BookStatus status) {
-        this.status = status;
-    }
-
     @Column(name = "status", columnDefinition = "varchar(20)")
     @Enumerated(EnumType.STRING)
     public BookStatus status;
@@ -57,4 +49,46 @@ public class BookEntity extends PanacheEntityBase {
             id = UUID.randomUUID();
         }
     }
+
+    public UUID getId() { return id; }
+
+    public String getTitle() { return title; }
+
+    public void setTitle(String title) { this.title = title; }
+
+    public String getAuthor() { return author; }
+
+    public void setAuthor(String author) { this.author = author; }
+
+    public String getDescription() { return description; }
+
+    public void setDescription(String description) { this.description = description; }
+
+    public String getGenre() { return genre; }
+
+    public void setGenre(String genre) { this.genre = genre; }
+
+    public String getIsbn() { return isbn; }
+
+    public void setIsbn(String isbn) { this.isbn = isbn; }
+
+    public String getCover() { return cover; }
+
+    public void setCover(String cover) { this.cover = cover; }
+
+    public String getPublisher() { return publisher; }
+
+    public void setPublisher(String publisher) { this.publisher = publisher; }
+
+    public String getTags() { return tags; }
+
+    public void setTags(String tags) { this.tags = tags; }
+
+    public String getCoverUrl() { return coverUrl; }
+
+    public void setCoverUrl(String coverUrl) { this.coverUrl = coverUrl; }
+
+    public BookStatus getStatus() { return status; }
+
+    public void setStatus(BookStatus status) { this.status = status; }
 }

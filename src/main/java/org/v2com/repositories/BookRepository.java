@@ -67,4 +67,18 @@ public class BookRepository {
         bookEntity.setStatus(BookStatus.UNAVAILABLE);
         entityManager.merge(bookEntity);
     }
+
+    public BookEntity updateBook(BookEntity bookEntity, BookEntity existingBookEntity){
+        existingBookEntity.setTitle(bookEntity.getTitle());
+        existingBookEntity.setAuthor(bookEntity.getAuthor());
+        existingBookEntity.setDescription(bookEntity.getDescription());
+        existingBookEntity.setIsbn(bookEntity.getIsbn());
+        existingBookEntity.setGenre(bookEntity.getGenre());
+        existingBookEntity.setCover(bookEntity.getCover());
+        existingBookEntity.setPublisher(bookEntity.getPublisher());
+        existingBookEntity.setTags(bookEntity.getTags());
+        existingBookEntity.setCoverUrl(bookEntity.getCoverUrl());
+        entityManager.merge(existingBookEntity);
+        return existingBookEntity;
+    }
 }

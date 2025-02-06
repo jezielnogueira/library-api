@@ -54,16 +54,6 @@ public class BookService {
         if (existingBookEntity == null) {
             throw new IllegalArgumentException("Livro nao encontrado para o ID fornecido.");
         }
-
-        existingBookEntity.title = bookEntity.title;
-        existingBookEntity.author = bookEntity.author;
-        existingBookEntity.description = bookEntity.description;
-        existingBookEntity.isbn = bookEntity.isbn;
-        existingBookEntity.genre = bookEntity.genre;
-        existingBookEntity.cover = bookEntity.cover;
-        existingBookEntity.publisher = bookEntity.publisher;
-        existingBookEntity.tags = bookEntity.tags;
-        existingBookEntity.coverUrl = bookEntity.coverUrl;
-        return existingBookEntity;
+        return repository.updateBook(bookEntity, existingBookEntity);
     }
 }
