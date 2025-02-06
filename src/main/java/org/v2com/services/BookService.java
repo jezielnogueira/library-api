@@ -21,11 +21,15 @@ public class BookService {
     BookRepository repository;
 
     public List<BookEntity> findAllBooks() {
-        return BookEntity.listAll();
+        return repository.findAllBooks();
     }
 
     public BookEntity findBookById(UUID id) {
-        return BookEntity.findById(id);
+        BookEntity book = repository.findById(id);
+        if (book == null) {
+            throw new IllegalArgumentException("Livro nao encontrado para o ID fornecido.");
+        }
+        return book;
     }
 
     public List<BookEntity> searchBooksByArgs(String title, String author, String tag) {
@@ -34,16 +38,18 @@ public class BookService {
 
 
     public BookEntity persistBook(@Valid BookEntity bookEntity) {
-        bookEntity.persist();
-        return bookEntity;
+        return repository.persist(bookEntity);
     }
 
     public void deleteBook(UUID id) {
-        BookEntity.deleteById(id);
+        BookEntity bookEntity = repository.findById(id);
+        if (bookEntity != null) {
+            repository.deleteById(id);
+        }
     }
 
     public BookEntity updateBook(UUID id, @Valid BookEntity bookEntity) {
-        BookEntity existingBookEntity = BookEntity.findById(id);
+        BookEntity existingBookEntity = repository.findById(id);
 
         if (existingBookEntity == null) {
             throw new IllegalArgumentException("Livro nao encontrado para o ID fornecido.");

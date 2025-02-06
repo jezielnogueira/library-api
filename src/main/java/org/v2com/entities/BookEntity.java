@@ -57,6 +57,4 @@ public class BookEntity extends PanacheEntityBase {
             id = UUID.randomUUID();
         }
     }
-
-
 }

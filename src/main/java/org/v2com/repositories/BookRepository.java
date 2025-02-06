@@ -24,9 +24,11 @@ public class BookRepository {
         return entityManager.createQuery("SELECT b FROM BookEntity b", BookEntity.class).getResultList();
     }
 
-    public void persist(BookEntity bookEntity) {
+    public BookEntity persist(BookEntity bookEntity) {
         entityManager.persist(bookEntity);
+        return bookEntity;
     }
+
     public void deleteById(UUID id) {
         BookEntity bookEntity = entityManager.find(BookEntity.class, id);
         if (bookEntity != null) {
