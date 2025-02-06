@@ -4,6 +4,7 @@ import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.inject.Inject;
 import jakarta.transaction.Transactional;
 import jakarta.validation.Valid;
+import org.v2com.entities.LoanEntity;
 import org.v2com.entities.UserEntity;
 import org.v2com.repositories.UserRepository;
 
@@ -21,7 +22,7 @@ public class UserService {
     UserRepository userRepository;
 
 
-    public List<UserEntity> findAllUsers() {
+    public List<UserEntity> listAllUsers() {
         return userRepository.getAllUsers();
     }
 
@@ -34,8 +35,9 @@ public class UserService {
     }
 
     @Transactional(SUPPORTS)
-    public void addUser(@Valid UserEntity userEntity) {
+    public UserEntity addUser(@Valid UserEntity userEntity) {
         userRepository.persist(userEntity);
+        return userEntity;
     }
 
     @Transactional(SUPPORTS)
@@ -55,5 +57,10 @@ public class UserService {
         userRepository.persist(existingUser);
         return existingUser;
     }
+
+    public List<LoanEntity> listUserLoans(@Valid UserEntity userEntity) {
+        return userEntity.getLoans();
+    }
+
 
 }

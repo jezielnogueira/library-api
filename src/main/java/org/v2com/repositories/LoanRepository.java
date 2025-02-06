@@ -29,6 +29,13 @@ public class LoanRepository {
         }
     }
 
+    public LoanEntity changeLoanStatus(LoanEntity loanEntity, boolean returned){
+        loanEntity = findById(loanEntity.id);
+        loanEntity.setReturned(returned);
+        entityManager.merge(loanEntity);
+        return loanEntity;
+    }
+
     public LoanEntity findActiveLoanByBookId(UUID bookId) {
         List<LoanEntity> result = entityManager.createQuery("SELECT l FROM LoanEntity l WHERE l.bookId = :bookId AND l.returned = false", LoanEntity.class)
                 .setParameter("bookId", bookId)

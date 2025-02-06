@@ -62,9 +62,9 @@ public class BookRepository {
         return query.getResultList();
     }
 
-    public void changeBookStatus(BookEntity bookEntity){
+    public void changeBookStatus(BookEntity bookEntity, BookStatus status){
         bookEntity = findById(bookEntity.id);
-        bookEntity.setStatus(BookStatus.UNAVAILABLE);
+        bookEntity.setStatus(status);
         entityManager.merge(bookEntity);
     }
 

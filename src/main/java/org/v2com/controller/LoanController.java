@@ -25,14 +25,14 @@ public class LoanController {
     }
 
     @GET
-    @Path("/byloan/{id}")
+    @Path("/loanbyid/{id}")
     public RestResponse<LoanEntity> getLoanById(@PathParam("id") UUID loanId) {
         LoanEntity loanEntity = loanService.findLoanById(loanId);
         return RestResponse.ok(loanEntity);
     }
 
     @GET
-    @Path("/byuser/{id}")
+    @Path("/getbyuserid/{id}")
     public RestResponse<List<LoanEntity>> getLoanByUserId(@PathParam("id") UUID id) {
         return null;
     }
@@ -44,14 +44,14 @@ public class LoanController {
         return RestResponse.ok(loanEntity);
     }
 
-    @POST
-    @Path("/return")
+    @PUT
+    @Path("/returnbook")
     public RestResponse<LoanEntity> returnBook(@QueryParam("bookId") UUID bookId) throws Exception {
         loanService.returnBook(bookId);
         return RestResponse.ok();
     }
 
-    @POST
+    @PUT
     @Path("/renew/{loanId}")
     public RestResponse<LoanEntity> renewBook(@PathParam("loanId") UUID loanId) {
         LoanEntity loanEntity = loanService.renewBookLoan(loanId, 14);
