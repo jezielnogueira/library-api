@@ -1,12 +1,10 @@
 package org.v2com.entities;
 
 import io.quarkus.hibernate.orm.panache.PanacheEntityBase;
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.Id;
-import jakarta.persistence.PrePersist;
+import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
+import org.v2com.enuns.UserStatus;
 
 import java.util.UUID;
 
@@ -30,9 +28,10 @@ public class UserEntity extends PanacheEntityBase {
 
     @Size(min = 8, max = 20)
     public String phone;
-//
-//    @Column(name = "status", columnDefinition = "varchar(20)")
-//    public UserStatus Status;
+
+    @Column(name = "status", columnDefinition = "varchar(20)")
+    @Enumerated(EnumType.STRING)
+    public UserStatus Status;
 
     public String password;
 
@@ -44,4 +43,7 @@ public class UserEntity extends PanacheEntityBase {
     }
 
 
+    public UserStatus getStatus() { return Status;}
+
+    public void setStatus(UserStatus status) { Status = status;}
 }
