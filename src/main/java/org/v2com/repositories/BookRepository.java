@@ -34,9 +34,7 @@ public class BookRepository {
     }
 
     public List<BookEntity> findBooksByArgs(String title, String author, String tag) {
-        // Construir a consulta dinamicamente com base nos parâmetros fornecidos
-        StringBuilder queryBuilder = new StringBuilder("SELECT b FROM Book b WHERE 1=1");
-
+        StringBuilder queryBuilder = new StringBuilder("SELECT b FROM BookEntity b WHERE 1=1");
         if (title != null && !title.isEmpty()) {
             queryBuilder.append(" AND b.title LIKE :title");
         }
@@ -47,10 +45,7 @@ public class BookRepository {
             queryBuilder.append(" AND b.tags LIKE :tag");
         }
 
-        // Criar a query com a string montada
         Query query = entityManager.createQuery(queryBuilder.toString());
-
-        // Definir os parâmetros dinamicamente na consulta
         if (title != null && !title.isEmpty()) {
             query.setParameter("title", "%" + title + "%");
         }
@@ -61,7 +56,6 @@ public class BookRepository {
             query.setParameter("tag", "%" + tag + "%");
         }
 
-        // Executar a consulta e retornar os resultados
         return query.getResultList();
     }
 }

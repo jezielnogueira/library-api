@@ -16,18 +16,42 @@ public class LoanEntity extends PanacheEntityBase {
     @Column(name = "id", columnDefinition = "uuid")
     public UUID id;
 
+    @Column(nullable = false)
     private UUID bookId;
+
+    @Column(nullable = false)
     private UUID userId;
 
-
+    @Column(nullable = false)
     private LocalDate loanDate;
+
+    @Column(nullable = false)
     private LocalDate returnDate;
+
+    @Column(nullable = false)
+    private boolean returned;
 
     @PrePersist
     public void prePersist() {
         if (id == null) {
             id = UUID.randomUUID();
         }
+    }
+
+    public UUID getBookId() {
+        return this.bookId;
+    }
+
+    public void setBookId(UUID bookId) {
+        this.bookId = bookId;
+    }
+
+    public boolean isReturned() {
+        return returned;
+    }
+
+    public void setReturned(boolean returned) {
+        this.returned = returned;
     }
 
     public UUID getUserId() {
@@ -47,9 +71,5 @@ public class LoanEntity extends PanacheEntityBase {
     }
     public void setReturnDate(LocalDate returnDate) {
         this.returnDate = returnDate;
-    }
-
-    public void setBookId(UUID bookId) {
-        this.bookId = bookId;
     }
 }

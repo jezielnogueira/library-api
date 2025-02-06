@@ -5,6 +5,7 @@ import jakarta.inject.Inject;
 import jakarta.persistence.EntityManager;
 import org.v2com.entities.LoanEntity;
 
+import java.util.List;
 import java.util.UUID;
 
 @ApplicationScoped
@@ -29,8 +30,9 @@ public class LoanRepository {
     }
 
     public LoanEntity findActiveLoanByBookId(UUID bookId) {
-        return entityManager.createQuery("SELECT l FROM LoanEntity l WHERE l.bookId = :bookId AND l.returnDate IS NULL", LoanEntity.class)
+        List<LoanEntity> result = entityManager.createQuery("SELECT l FROM LoanEntity l WHERE l.bookId = :bookId AND l.returned = false", LoanEntity.class)
                 .setParameter("bookId", bookId)
-                .getSingleResult();
+                .getResultList();
+        return result.isEmpty() ? null : result.get(0);
     }
 }

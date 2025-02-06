@@ -4,7 +4,7 @@ import io.quarkus.hibernate.orm.panache.PanacheRepository;
 import jakarta.persistence.EntityManager;
 import org.v2com.entities.UserEntity;
 
-public class MyUserRepository implements PanacheRepository<UserEntity> {
+public class UserRepository implements PanacheRepository<UserEntity> {
     EntityManager entityManager;
 
     public Integer countUsers(){

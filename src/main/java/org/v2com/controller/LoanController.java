@@ -1,13 +1,12 @@
 package org.v2com.controller;
 
 import jakarta.inject.Inject;
-import jakarta.ws.rs.POST;
-import jakarta.ws.rs.Path;
-import jakarta.ws.rs.QueryParam;
+import jakarta.ws.rs.*;
 import org.jboss.resteasy.reactive.RestResponse;
 import org.v2com.entities.LoanEntity;
 import org.v2com.services.LoanService;
 
+import java.util.List;
 import java.util.UUID;
 
 @Path( "/api/v1/loan")
@@ -16,8 +15,31 @@ public class LoanController {
     @Inject
     LoanService loanService;
 
+    @GET
+    @Path("/list")
+    public RestResponse<List<LoanEntity>> getAllLoan() {
+        List<LoanEntity> loanEntities = loanService.getAllLoans();
+        return loanEntities != null && !loanEntities.isEmpty()
+                ? RestResponse.ok(loanEntities)
+                : RestResponse.status(RestResponse.Status.NOT_FOUND);
+
+    }
+
+    @GET
+    @Path("/byloan/{id}")
+    public RestResponse<LoanEntity> getLoanById(@PathParam("id") UUID loanId) {
+        LoanEntity loanEntity = loanService.findLoanById(loanId);
+        return RestResponse.ok(loanEntity);
+    }
+
+    @GET
+    @Path("/byuser/{id}")
+    public RestResponse<List<LoanEntity>> getLoanByUserId(@PathParam("id") UUID id) {
+        return null;
+    }
+
     @POST
-    @Path("/loan")
+    @Path("/create")
     public RestResponse<LoanEntity> loanBook(@QueryParam("bookId") UUID bookId, @QueryParam("userId") UUID userId) throws Exception {
         LoanEntity loanEntity = loanService.loanBook(bookId, userId);
         return RestResponse.ok(loanEntity);

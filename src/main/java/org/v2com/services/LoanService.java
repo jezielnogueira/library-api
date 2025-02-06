@@ -9,6 +9,7 @@ import org.v2com.repositories.BookRepository;
 import org.v2com.repositories.LoanRepository;
 
 import java.time.LocalDate;
+import java.util.List;
 import java.util.UUID;
 
 @ApplicationScoped
@@ -20,26 +21,30 @@ public class LoanService {
     @Inject
     LoanRepository loanRepository;
 
+
+    public List<LoanEntity> getAllLoans() {
+        return LoanEntity.listAll();
+    }
+
     @Transactional
     public LoanEntity loanBook(UUID bookId, UUID userId) throws Exception {
-        // Verificar se o livro existe
         BookEntity bookEntity = bookRepository.findById(bookId);
         if (bookEntity == null) {
             throw new Exception("Livro não encontrado");
         }
 
-        // Verificar se o livro já está emprestado
         LoanEntity existingLoanEntity = loanRepository.findActiveLoanByBookId(bookId);
         if (existingLoanEntity != null) {
-            throw new Exception("Livro já está emprestado");
+            //throw new Exception("Livro já está emprestado");
+            return existingLoanEntity;
         }
 
-        // Criar e persistir o empréstimo
         LoanEntity loanEntity = new LoanEntity();
         loanEntity.setBookId(bookId);
         loanEntity.setUserId(userId);
+        loanEntity.setReturned(false);
         loanEntity.setLoanDate(LocalDate.now());
-        loanEntity.setReturnDate(null); // Não há data de devolução ainda
+        loanEntity.setReturnDate(LocalDate.now().plusDays(14)); // TODO sem data de devolucao ainda
 
         loanRepository.persist(loanEntity);
 
@@ -65,9 +70,9 @@ public class LoanService {
         loanRepository.persist(loanEntity);
         return loanEntity;
     }
+
     public LoanEntity findLoanById(UUID loanId) {
         return loanRepository.findById(loanId);
     }
-
 
 }
