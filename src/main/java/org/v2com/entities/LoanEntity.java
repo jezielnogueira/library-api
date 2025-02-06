@@ -38,38 +38,23 @@ public class LoanEntity extends PanacheEntityBase {
         }
     }
 
-    public UUID getBookId() {
-        return this.bookId;
-    }
+    public UUID getBookId() { return this.bookId; }
 
-    public void setBookId(UUID bookId) {
-        this.bookId = bookId;
-    }
+    public void setBookId(UUID bookId) { this.bookId = bookId; }
 
-    public boolean isReturned() {
-        return returned;
-    }
+    public boolean isReturned() { return returned; }
 
-    public void setReturned(boolean returned) {
-        this.returned = returned;
-    }
+    public void setReturned(boolean returned) { this.returned = returned; }
 
-    public UUID getUserId() {
-        return this.userId;
-    }
-    public void setUserId(UUID userId) {
-        this.userId = userId;
-    }
-    public LocalDate getLoanDate() {
-        return this.loanDate;
-    }
-    public void setLoanDate(LocalDate loanDate) {
-        this.loanDate = loanDate;
-    }
-    public LocalDate getReturnDate() {
-        return returnDate;
-    }
-    public void setReturnDate(LocalDate returnDate) {
-        this.returnDate = returnDate;
-    }
+    public UUID getUserId() { return this.userId; }
+
+    public void setUserId(UUID userId) { this.userId = userId; }
+
+    public LocalDate getLoanDate() { return this.loanDate; }
+
+    public void setLoanDate(LocalDate loanDate) { this.loanDate = loanDate; }
+
+    public LocalDate getReturnDate() { return returnDate; }
+
+    public void setReturnDate(LocalDate returnDate) { this.returnDate = returnDate; }
 }

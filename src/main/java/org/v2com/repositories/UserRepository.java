@@ -1,6 +1,7 @@
 package org.v2com.repositories;
 
 import io.quarkus.hibernate.orm.panache.PanacheRepository;
+import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.inject.Inject;
 import jakarta.persistence.EntityManager;
 import org.v2com.entities.UserEntity;
@@ -9,6 +10,7 @@ import org.v2com.enuns.UserStatus;
 import java.util.List;
 import java.util.UUID;
 
+@ApplicationScoped
 public class UserRepository implements PanacheRepository<UserEntity> {
 
     @Inject
