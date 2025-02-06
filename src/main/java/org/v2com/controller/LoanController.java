@@ -22,7 +22,6 @@ public class LoanController {
         return loanEntities != null && !loanEntities.isEmpty()
                 ? RestResponse.ok(loanEntities)
                 : RestResponse.status(RestResponse.Status.NOT_FOUND);
-
     }
 
     @GET
@@ -54,7 +53,7 @@ public class LoanController {
 
     @POST
     @Path("/renew/{loanId}")
-    public RestResponse<LoanEntity> renewBook(@QueryParam("bookId") UUID loanId) {
+    public RestResponse<LoanEntity> renewBook(@PathParam("loanId") UUID loanId) {
         LoanEntity loanEntity = loanService.renewBookLoan(loanId, 14);
 
         return RestResponse.ok(loanEntity);

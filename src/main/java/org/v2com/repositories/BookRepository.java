@@ -5,6 +5,7 @@ import jakarta.inject.Inject;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.Query;
 import org.v2com.entities.BookEntity;
+import org.v2com.enuns.BookStatus;
 
 import java.util.List;
 import java.util.UUID;
@@ -57,5 +58,11 @@ public class BookRepository {
         }
 
         return query.getResultList();
+    }
+
+    public void changeBookStatus(BookEntity bookEntity){
+        bookEntity = findById(bookEntity.id);
+        bookEntity.setStatus(BookStatus.UNAVAILABLE);
+        entityManager.merge(bookEntity);
     }
 }

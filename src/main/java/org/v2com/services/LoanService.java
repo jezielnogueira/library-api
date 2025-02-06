@@ -46,6 +46,7 @@ public class LoanService {
         loanEntity.setLoanDate(LocalDate.now());
         loanEntity.setReturnDate(LocalDate.now().plusDays(14)); // TODO sem data de devolucao ainda
 
+        bookRepository.changeBookStatus(bookEntity);
         loanRepository.persist(loanEntity);
 
         return loanEntity;

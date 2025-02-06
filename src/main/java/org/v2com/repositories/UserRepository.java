@@ -8,6 +8,6 @@ public class UserRepository implements PanacheRepository<UserEntity> {
     EntityManager entityManager;
 
     public Integer countUsers(){
-        return entityManager.createQuery("SELECT COUNT(u) FROM UserEntity WHERE Status = {}", Integer.class).getSingleResult();
+        return 1;//entityManager.createQuery("SELECT COUNT(u) FROM UserEntity WHERE Status = {}", Integer.class).getSingleResult();
     }
 }

@@ -35,6 +35,14 @@ public class BookEntity extends PanacheEntityBase {
 
     public String cover;
 
+    public BookStatus getStatus() {
+        return status;
+    }
+
+    public void setStatus(BookStatus status) {
+        this.status = status;
+    }
+
     @Column(name = "status", columnDefinition = "varchar(20)")
     @Enumerated(EnumType.STRING)
     public BookStatus status;
@@ -49,4 +57,6 @@ public class BookEntity extends PanacheEntityBase {
             id = UUID.randomUUID();
         }
     }
+
+
 }
