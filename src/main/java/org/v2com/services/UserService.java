@@ -21,12 +21,12 @@ public class UserService {
     @Inject
     UserRepository userRepository;
 
-
+    @Transactional
     public List<UserEntity> listAllUsers() {
         return userRepository.getAllUsers();
     }
 
-    public UserEntity findUserById(long id) {
+    public UserEntity findUserById(UUID id) {
         return userRepository.findById(id);
     }
 
@@ -34,20 +34,18 @@ public class UserService {
         return userRepository.findByName(name);
     }
 
-    @Transactional(SUPPORTS)
-    public UserEntity addUser(@Valid UserEntity userEntity) {
+    public void addUser(@Valid UserEntity userEntity) {
         userRepository.persist(userEntity);
-        return userEntity;
     }
 
-    @Transactional(SUPPORTS)
-    public void deleteUser(long id) {
-        userRepository.deleteById(id);
+    @Transactional
+    public void deleteUser(UUID id) {
+        userRepository.deleteUserById(id);
     }
 
-    @Transactional(SUPPORTS)
-    public UserEntity updateUser(UUID id, @Valid UserEntity userEntity) {
-        UserEntity existingUser = userRepository.findbyId(id);
+    @Transactional
+    public void updateUser(UUID id, @Valid UserEntity userEntity) {
+        UserEntity existingUser = userRepository.findById(id);
 
         existingUser.setName(userEntity.getName());
         existingUser.setAddress(userEntity.getAddress());
@@ -55,7 +53,6 @@ public class UserService {
         existingUser.setPhone(userEntity.getPhone());
 
         userRepository.persist(existingUser);
-        return existingUser;
     }
 
     public List<LoanEntity> listUserLoans(@Valid UserEntity userEntity) {

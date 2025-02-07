@@ -16,7 +16,6 @@ import static jakarta.transaction.Transactional.TxType.REQUIRED;
 @Transactional(REQUIRED)
 public class BookService {
 
-
     @Inject
     BookRepository repository;
 

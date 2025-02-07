@@ -16,21 +16,20 @@ public class LoanRepository {
     public void persist(Object entity) {
         entityManager.persist(entity);
     }
-    public LoanEntity findById(UUID id) {
+    public LoanEntity findLoanById(UUID id) {
         return entityManager.find(LoanEntity.class, id);
     }
     public void update(Object entity) {
         entityManager.merge(entity);
     }
-    public void deleteById(Long id) {
-        LoanEntity loanEntity = entityManager.find(LoanEntity.class, id);
-        if (loanEntity != null) {
-            entityManager.remove(loanEntity);
-        }
+
+    public List<LoanEntity> getAllLoans(){
+        return entityManager.createQuery("SELECT l FROM LoanEntity l", LoanEntity.class).getResultList();
     }
 
+
     public LoanEntity changeLoanStatus(LoanEntity loanEntity, boolean returned){
-        loanEntity = findById(loanEntity.id);
+        loanEntity = findLoanById(loanEntity.id);
         loanEntity.setReturned(returned);
         entityManager.merge(loanEntity);
         return loanEntity;
@@ -41,5 +40,11 @@ public class LoanRepository {
                 .setParameter("bookId", bookId)
                 .getResultList();
         return result.isEmpty() ? null : result.get(0);
+    }
+
+    public List<LoanEntity> findActiveLoanByUserId(UUID user) {
+        return entityManager.createQuery("SELECT l FROM LoanEntity l WHERE l.user.id = :user AND l.returned = false", LoanEntity.class)
+                .setParameter("user", user)
+                .getResultList();
     }
 }

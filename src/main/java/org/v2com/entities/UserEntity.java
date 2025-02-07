@@ -1,5 +1,6 @@
 package org.v2com.entities;
 
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import io.quarkus.hibernate.orm.panache.PanacheEntityBase;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;
@@ -30,13 +31,15 @@ public class UserEntity extends PanacheEntityBase {
     @Size(min = 8, max = 20)
     public String phone;
 
-    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+    @JsonManagedReference
     private List<LoanEntity> loans;
 
     @Column(name = "status", columnDefinition = "varchar(20)")
     @Enumerated(EnumType.STRING)
     public UserStatus Status;
 
+    @NotNull
     public String password;
 
     @PrePersist

@@ -21,7 +21,7 @@ public class LoanController {
         List<LoanEntity> loanEntities = loanService.getAllLoans();
         return loanEntities != null && !loanEntities.isEmpty()
                 ? RestResponse.ok(loanEntities)
-                : RestResponse.status(RestResponse.Status.NOT_FOUND);
+                : RestResponse.status(RestResponse.Status.NO_CONTENT);
     }
 
     @GET
@@ -34,7 +34,10 @@ public class LoanController {
     @GET
     @Path("/getbyuserid/{id}")
     public RestResponse<List<LoanEntity>> getLoanByUserId(@PathParam("id") UUID id) {
-        return null;
+        List<LoanEntity> loanEntities = loanService.findActiveLoanByUserId(id);
+        return loanEntities != null && !loanEntities.isEmpty()
+                ? RestResponse.ok(loanEntities)
+                : RestResponse.status(RestResponse.Status.NO_CONTENT);
     }
 
     @POST
@@ -46,8 +49,8 @@ public class LoanController {
 
     @PUT
     @Path("/returnbook")
-    public RestResponse<LoanEntity> returnBook(@QueryParam("bookId") UUID bookId) throws Exception {
-        loanService.returnBook(bookId);
+    public RestResponse<LoanEntity> returnBook(@QueryParam("loanId") UUID loanId) throws Exception {
+        loanService.endLoan(loanId);
         return RestResponse.ok();
     }
 

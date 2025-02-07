@@ -1,6 +1,5 @@
 package org.v2com.repositories;
 
-import io.quarkus.hibernate.orm.panache.PanacheRepository;
 import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.inject.Inject;
 import jakarta.persistence.EntityManager;
@@ -11,7 +10,7 @@ import java.util.List;
 import java.util.UUID;
 
 @ApplicationScoped
-public class UserRepository implements PanacheRepository<UserEntity> {
+public class UserRepository {
 
     @Inject
     EntityManager entityManager;
@@ -22,7 +21,7 @@ public class UserRepository implements PanacheRepository<UserEntity> {
                 .getSingleResult();
     }
 
-    public UserEntity findbyId(UUID id){
+    public UserEntity findById(UUID id){
         return entityManager.find(UserEntity.class, id);
     }
 
@@ -34,7 +33,7 @@ public class UserRepository implements PanacheRepository<UserEntity> {
         entityManager.persist(userEntity);
     }
 
-    public void deleteById(UUID id){
+    public void deleteUserById(UUID id){
         UserEntity userEntity = entityManager.find(UserEntity.class, id);
         if(userEntity != null){
             entityManager.remove(userEntity);
@@ -42,7 +41,7 @@ public class UserRepository implements PanacheRepository<UserEntity> {
     }
 
     public UserEntity changeUserStatus(UserEntity userEntity, UserStatus status){
-        userEntity = findbyId(userEntity.id);
+        userEntity = findById(userEntity.id);
         userEntity.setStatus(status);
         entityManager.merge(userEntity);
         return userEntity;

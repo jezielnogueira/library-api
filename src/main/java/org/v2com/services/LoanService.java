@@ -30,14 +30,14 @@ public class LoanService {
 
 
     public List<LoanEntity> getAllLoans() {
-        return LoanEntity.listAll();
+        return loanRepository.getAllLoans();
     }
 
     @Transactional
     public LoanEntity loanBook(UUID bookId, UUID userId) throws Exception {
         BookEntity bookEntity = bookRepository.findById(bookId);
         LoanEntity existingLoanEntity = loanRepository.findActiveLoanByBookId(bookId);
-        UserEntity userEntity = userRepository.findbyId(userId);
+        UserEntity userEntity = userRepository.findById(userId);
 
         if (bookEntity == null) {
             throw new Exception("Livro não encontrado");
@@ -69,8 +69,8 @@ public class LoanService {
     }
 
     @Transactional
-    public void returnBook(UUID loanId) throws Exception {
-        LoanEntity loanEntity = loanRepository.findById(loanId);
+    public void endLoan(UUID loanId) throws Exception {
+        LoanEntity loanEntity = loanRepository.findLoanById(loanId);
         if (loanEntity == null) {
             throw new Exception("Empréstimo não encontrado");
         }
@@ -80,15 +80,20 @@ public class LoanService {
         loanRepository.persist(loanEntity);
     }
 
+    @Transactional
     public LoanEntity renewBookLoan(UUID laonId, int days) {
-        LoanEntity loanEntity = loanRepository.findById(laonId);
+        LoanEntity loanEntity = loanRepository.findLoanById(laonId);
         loanEntity.setReturnDate(LocalDate.now().plusDays(days));
         loanRepository.persist(loanEntity);
         return loanEntity;
     }
 
     public LoanEntity findLoanById(UUID loanId) {
-        return loanRepository.findById(loanId);
+        return loanRepository.findLoanById(loanId);
+    }
+
+    public List<LoanEntity> findActiveLoanByUserId(UUID userId){
+        return loanRepository.findActiveLoanByUserId(userId);
     }
 
 }
