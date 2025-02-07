@@ -1,12 +1,12 @@
 package org.v2com.controller;
 
-
 import jakarta.inject.Inject;
 import jakarta.validation.Valid;
 import jakarta.ws.rs.*;
-import jakarta.ws.rs.core.*;
 import java.util.UUID;
 
+import jakarta.ws.rs.core.Context;
+import jakarta.ws.rs.core.UriInfo;
 import org.jboss.resteasy.reactive.RestResponse;
 import org.v2com.entities.BookEntity;
 import org.v2com.entities.LoanEntity;
@@ -18,53 +18,59 @@ import java.util.List;
 @Path("/api/v1/books")
 public class BookController {
 
-    @Inject
-    LoanService loanService;
+    BookService service;
 
-    @GET
-    @Path("/list")
-    public RestResponse<List<LoanEntity>> getAllLoan() {
-        List<LoanEntity> loanEntities = loanService.getAllLoans();
-        return loanEntities != null && !loanEntities.isEmpty()
-                ? RestResponse.ok(loanEntities)
-                : RestResponse.status(RestResponse.Status.NO_CONTENT);
+    public BookController(BookService service) {
+        this.service = service;
     }
 
     @GET
-    @Path("/loanbyid/{id}")
-    public RestResponse<LoanEntity> getLoanById(@PathParam("id") UUID loanId) {
-        LoanEntity loanEntity = loanService.findLoanById(loanId);
-        return RestResponse.ok(loanEntity);
+    public RestResponse<List<BookEntity>> getAllBooks(){
+        List<BookEntity> bookEntities = service.findAllBooks();
+        return bookEntities != null && !bookEntities.isEmpty()
+                ? RestResponse.ok(bookEntities)
+                : RestResponse.status(RestResponse.Status.NOT_FOUND);
     }
 
     @GET
-    @Path("/getbyuserid/{id}")
-    public RestResponse<List<LoanEntity>> getLoanByUserId(@PathParam("id") UUID id) {
-        List<LoanEntity> loanEntities = loanService.findActiveLoanByUserId(id);
-        return loanEntities != null && !loanEntities.isEmpty()
-                ? RestResponse.ok(loanEntities)
+    @Path("/{id}")
+    public RestResponse<BookEntity> getBookById(@PathParam("id") String idStr){
+        BookEntity bookEntity = service.findBookById(UUID.fromString(idStr));
+        return bookEntity != null
+                ? RestResponse.ok(bookEntity)
+                : RestResponse.status(RestResponse.Status.NOT_FOUND);
+    }
+
+    @GET
+    @Path("/search")
+    public RestResponse<List<BookEntity>> getBooksByArgs(@QueryParam("title") String title, @QueryParam("author") String author, @QueryParam("tag") String tag){
+        List<BookEntity> bookEntities = service.searchBooksByArgs(title, author, tag);
+        return bookEntities != null && !bookEntities.isEmpty()
+                ? RestResponse.ok(bookEntities)
                 : RestResponse.status(RestResponse.Status.NO_CONTENT);
     }
 
     @POST
-    @Path("/create")
-    public RestResponse<LoanEntity> loanBook(@QueryParam("bookId") UUID bookId, @QueryParam("userId") UUID userId) throws Exception {
-        LoanEntity loanEntity = loanService.loanBook(bookId, userId);
-        return RestResponse.ok(loanEntity);
+    @Path("/")
+    public RestResponse<Void> persistBook(@Valid BookEntity bookEntity, @Context UriInfo uriInfo) {
+        BookEntity persistedBookEntity = service.persistBook(bookEntity);
+        var location = uriInfo.getAbsolutePathBuilder().path(persistedBookEntity.id.toString()).build();
+        return RestResponse.created(location);
     }
 
     @PUT
-    @Path("/returnbook")
-    public RestResponse<LoanEntity> returnBook(@QueryParam("loanId") UUID loanId) throws Exception {
-        loanService.endLoan(loanId);
-        return RestResponse.ok();
+    @Path("/")
+    public RestResponse<BookEntity> updateBook(@Valid BookEntity bookEntity){
+        bookEntity = service.updateBook(bookEntity.id, bookEntity);
+        return RestResponse.ok(bookEntity);
     }
 
-    @PUT
-    @Path("/renew/{loanId}")
-    public RestResponse<LoanEntity> renewBook(@PathParam("loanId") UUID loanId) {
-        LoanEntity loanEntity = loanService.renewBookLoan(loanId, 14);
+    @DELETE
+    @Path("/")
+    public RestResponse<Void> deleteBook(@QueryParam("id") String idStr) {
 
-        return RestResponse.ok(loanEntity);
+        service.deleteBook(UUID.fromString(idStr));
+        return RestResponse.noContent();
     }
+
 }

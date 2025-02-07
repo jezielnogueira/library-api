@@ -3,6 +3,7 @@ package org.v2com.entities;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 import io.quarkus.hibernate.orm.panache.PanacheEntityBase;
 import jakarta.persistence.*;
+import jakarta.transaction.Transactional;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
 import org.v2com.enuns.UserStatus;
@@ -10,7 +11,10 @@ import org.v2com.enuns.UserStatus;
 import java.util.List;
 import java.util.UUID;
 
+import static jakarta.transaction.Transactional.TxType.REQUIRED;
+
 @Entity
+@Transactional(REQUIRED)
 public class UserEntity extends PanacheEntityBase {
 
     @Id

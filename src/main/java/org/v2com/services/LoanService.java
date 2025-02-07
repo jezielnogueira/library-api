@@ -71,11 +71,16 @@ public class LoanService {
     @Transactional
     public void endLoan(UUID loanId) throws Exception {
         LoanEntity loanEntity = loanRepository.findLoanById(loanId);
+        BookEntity bookEntity = bookRepository.findById(loanEntity.getBookId());
         if (loanEntity == null) {
             throw new Exception("Empréstimo não encontrado");
         }
+        if (bookEntity == null) {
+            throw new Exception("Livro não encontrado");
+        }
 
         loanRepository.changeLoanStatus(loanEntity, true);
+        bookEntity.setStatus(BookStatus.AVAILABLE);
 
         loanRepository.persist(loanEntity);
     }

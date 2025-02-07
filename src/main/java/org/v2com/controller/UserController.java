@@ -1,5 +1,6 @@
 package org.v2com.controller;
 
+import jakarta.inject.Inject;
 import jakarta.validation.Valid;
 import jakarta.ws.rs.*;
 import jakarta.ws.rs.core.Response;
@@ -13,11 +14,12 @@ import java.util.UUID;
 @Path("/api/v1/user")
 public class UserController {
 
+    @Inject
     UserService userService;
 
-    public UserController(UserService userService){
-        this.userService = userService;
-    }
+//    public UserController(UserService userService){
+//        this.userService = userService;
+//    }
 
 
     @GET
@@ -30,8 +32,8 @@ public class UserController {
     }
 
     @GET
-    @Path("finduserbyid")
-    public Response getUserById(@QueryParam("userId") UUID id){
+    @Path("finduserbyid/{userId}")
+    public Response getUserById(@PathParam("userId") UUID id){
         try {
             UserEntity userEntity = userService.findUserById(id);
             return Response.ok(userEntity).build();
@@ -52,9 +54,13 @@ public class UserController {
     }
 
     @GET
-    @Path("/loans/")
-    public Response getUserLoans(@QueryParam("userId") UUID id){
-        List<LoanEntity> loanEntitiesList = userService.listUserLoans(userService.findUserById(id));
+    @Path("/loans/{userId}")
+    public Response getUserLoans(@PathParam("userId") UUID id){
+        UserEntity userEntity = userService.findUserById(id);
+        if(userEntity == null){
+            return Response.status(Response.Status.NO_CONTENT).build();
+        }
+        List<LoanEntity> loanEntitiesList = userService.listUserLoans(userEntity);
         return  loanEntitiesList != null && !loanEntitiesList.isEmpty()
                 ? Response.ok(loanEntitiesList).build()
                 : Response.status(Response.Status.NO_CONTENT).build();

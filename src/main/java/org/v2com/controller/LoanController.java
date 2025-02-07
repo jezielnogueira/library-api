@@ -48,15 +48,15 @@ public class LoanController {
     }
 
     @PUT
-    @Path("/returnbook")
-    public RestResponse<LoanEntity> returnBook(@QueryParam("loanId") UUID loanId) throws Exception {
-        loanService.endLoan(loanId);
+    @Path("/returnbook/{id}")
+    public RestResponse<LoanEntity> returnBook(@PathParam("id") UUID id) throws Exception {
+        loanService.endLoan(id);
         return RestResponse.ok();
     }
 
     @PUT
-    @Path("/renew/{loanId}")
-    public RestResponse<LoanEntity> renewBook(@PathParam("loanId") UUID loanId) {
+    @Path("/renew/{id}")
+    public RestResponse<LoanEntity> renewBook(@PathParam("id") UUID loanId) {
         LoanEntity loanEntity = loanService.renewBookLoan(loanId, 14);
 
         return RestResponse.ok(loanEntity);
